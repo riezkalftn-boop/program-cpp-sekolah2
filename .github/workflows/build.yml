@@ -1,0 +1,30 @@
+name: Build Program C++ Windows
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'informasi_wilayah.cpp'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+
+      - name: Install compiler Windows
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-mingw-w64-x86-64
+
+      - name: Compile program
+        run: |
+          x86_64-w64-mingw32-g++ -std=c++17 -O2 -static informasi_wilayah.cpp -o informasi_wilayah.exe
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: program-cpp-windows
+          path: informasi_wilayah.exe
